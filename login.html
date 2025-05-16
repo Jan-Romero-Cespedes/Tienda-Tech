@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Mini Tienda</title>
+  <link rel="stylesheet" href="/Css/registro.css" />
+</head>
+
+<body>
+  <header>
+    <div id="header-placeholder"></div>
+    <script>
+      fetch('components/header.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('header-placeholder').innerHTML = html;
+  });
+
+    </script>
+  </header>
+
+  <main>
+    <h1>Iniciar Sesión</h1>
+    <section class="login-form">
+      <form id="loginForm">
+        <input type="text" name="nombre" placeholder="Nombre de usuario" required />
+        <br />
+        <input type="password" name="password" placeholder="Contraseña" required />
+        <button type="submit">Entrar</button>
+      </form>
+      <p>O inicia sesión con:</p>
+      <a href="http://localhost:3000/auth/google"><button>Google</button></a>
+      <p>¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const data = {
+        nombre: form.get('nombre'),
+        password: form.get('password')
+      };
+
+      const res = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert('Sesión iniciada correctamente');
+        window.location.href = 'tienda.html';
+      } else {
+        alert('Login incorrecto');
+      }
+
+      // Nota: la variable user no está definida aquí, por eso la línea que guarda localStorage debe ir dentro de if (res.ok) y usar la respuesta
+      // Ejemplo guardando user desde respuesta:
+      if (res.ok) {
+        const user = await res.json();
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location.href = 'tienda.html';
+      }
+    });
+  </script>
+</body>
+
+</html>

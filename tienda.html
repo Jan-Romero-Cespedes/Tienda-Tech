@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda</title>
+  <link rel="stylesheet" href="Css/tienda.css" />
+</head>
+
+<body>
+  <header>
+    <div id="header-placeholder"></div>
+    <script>
+      fetch('components/header.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+      });
+
+    </script>
+  </header>
+
+  <main>
+    <h1>Productos Disponibles</h1>
+    <div id="productos" class="productos-grid"></div>
+  </main>
+
+  <script>
+    // Inicializar carrito globalmente
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    const imagenPorDefecto = (nombre) => {
+      nombre = nombre.toLowerCase();
+      if (nombre.includes('teclado')) return 'images/teclado.jpg';
+      if (nombre.includes('ratón') || nombre.includes('mouse')) return 'images/raton.jpg';
+      if (nombre.includes('monitor')) return 'images/monitor.jpg';
+      if (nombre.includes('auricular')) return 'images/auriculares.jpg';
+      if (nombre.includes('altavoz')) return 'images/altavoz.jpg';
+      return 'images/default.jpg';
+    };
+
+    // Guardar carrito en localStorage y actualizar contador
+    const actualizarCarrito = () => {
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      const cartCount = document.getElementById('cart-count');
+      if (cartCount) {
+        cartCount.textContent = carrito.length;
+      }
+    };
+
+    fetch('http://localhost:3000/products')
+      .then(res => res.json())
+      .then(data => {
+        const contenedor = document.getElementById('productos');
+
+        data.forEach(producto => {
+          const imagen = producto.imagen_url
+            ? `/images/${producto.imagen_url}`
+            : imagenPorDefecto(producto.nombre);
+
+          const div = document.createElement('div');
+          div.classList.add('producto');
+          div.innerHTML = `
+            <img src="${imagen}" alt="${producto.nombre}">
+            <h3>${producto.nombre}</h3>
+            <p>Precio: €${producto.precio}</p>
+            <button class="agregar-carrito">Agregar al carrito</button>
+          `;
+
+          div.querySelector('.agregar-carrito').addEventListener('click', () => {
+            const existente = carrito.find(p => p.id === producto.id);
+            if (existente) {
+              existente.cantidad += 1;
+            } else {
+              carrito.push({ ...producto, cantidad: 1 });
+            }
+            actualizarCarrito();
+          });
+
+          contenedor.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('productos').innerHTML = '<p>Error al cargar productos</p>';
+        console.error(err);
+      });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Tienda de Componentes</title>
+  <link rel="stylesheet" href="Css/index.css" />
+</head>
+
+<body>
+  <header>
+    <div id="header-placeholder"></div>
+    <script>
+     fetch('components/header.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('header-placeholder').innerHTML = html;
+  });
+
+    </script>
+    
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Sobre la Tienda</h2>
+      <p>
+        En nuestra tienda encontrarás una selección especializada de periféricos y componentes de ordenador,
+        como teclados, ratones, monitores, auriculares, altavoces y mucho más.
+        Trabajamos con marcas reconocidas para ofrecerte calidad y rendimiento al mejor precio.
+      </p>
+      <p>
+        Ya seas gamer, programador o usuario ocasional, aquí encontrarás el equipo perfecto para ti.
+        ¡Explora nuestros productos y equípate con lo mejor!
+      </p>
+    </section>
+
+    <section class="cta">
+      <h3>¿Listo para comprar?</h3>
+      <p>Haz clic abajo para ver todos nuestros productos disponibles:</p>
+      <a href="tienda.html" class="boton-ir-tienda">Ir a la tienda</a>
+    </section>
+  </main>
+
+  <footer>
+    <div id="footer-placeholder"></div>
+    <script>
+      fetch('components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        });
+    </script>
+
+  </footer>
+</body>
+
+</html>

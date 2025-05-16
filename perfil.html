@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Perfil</title>
+  <link rel="stylesheet" href="Css/perfil.css" />
+</head>
+<body>
+  <header>
+    <div id="header-placeholder"></div>
+    <script>
+      fetch('components/header.html')
+        .then(res => res.text())
+        .then(html => document.getElementById('header-placeholder').innerHTML = html);
+    </script>
+  </header>
+
+  <main class="perfil-container">
+    <h2>Área Personal</h2>
+
+    <form id="perfilForm" class="perfil-info">
+      <label for="nombre">Nombre:</label>
+      <input type="text" name="nombre" id="nombre" required />
+
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" disabled />
+      
+      <div class="perfil-actions">
+        <button type="submit" class="btn-actualizar">Guardar cambios</button>
+        <button type="button" id="logout" class="btn-logout">Cerrar sesión</button>
+      </div>
+    </form>
+
+    <div id="mensaje" class="perfil-mensaje"></div>
+  </main>
+
+  <script>
+    const user = JSON.parse(sessionStorage.getItem('user'));
+
+    if (!user) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('nombre').value = user.nombre;
+      document.getElementById('email').value = user.email;
+    }
+
+    document.getElementById('perfilForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nuevoNombre = document.getElementById('nombre').value;
+
+      const res = await fetch(`http://localhost:3000/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nombre: nuevoNombre })
+      });
+
+      if (res.ok) {
+        user.nombre = nuevoNombre;
+        sessionStorage.setItem('user', JSON.stringify(user));
+        document.getElementById('mensaje').textContent = 'Perfil actualizado correctamente.';
+      } else {
+        document.getElementById('mensaje').textContent = 'Error al actualizar el perfil.';
+      }
+    });
+
+    document.getElementById('logout').addEventListener('click', async () => {
+      await fetch('http://localhost:3000/logout');  // GET en tu backend actual
+      sessionStorage.removeItem('user');
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
