@@ -3,92 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carrito de Compras</title>
-  <link rel="stylesheet" href="Css/carrito.css" />
+  <title>Carrito de Compras - Tienda Tech</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/carrito.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 </head>
 <body>
-    <header>
-    <div id="header-placeholder"></div>
-    <script>
-      fetch('components/header.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('header-placeholder').innerHTML = html;
-  });
-
-    </script>
-    
-  </header>
+  <div id="header-placeholder"></div>
 
   <main>
-    <h1>Tu Carrito</h1>
-    <section id="carrito" class="carrito">
-      <ul id="lista-carrito"></ul>
-      <p id="total">Total: €0</p>
-    </section>
-    <button class="btn-comprar" onclick="realizarCompra()">Realizar compra</button>
+    <div class="carrito-container">
+      <h1 class="carrito-titulo">Tu Carrito</h1>
+      
+      <div id="carrito-vacio" class="carrito-vacio">
+        <p>Tu carrito está vacío</p>
+        <a href="tienda.html" class="seguir-comprando">Ir a la tienda</a>
+      </div>
+      
+      <div id="carrito-contenido" class="hidden">
+        <ul id="lista-carrito"></ul>
+        
+        <div class="carrito-total">
+          <span>Total:</span>
+          <span id="total">€0.00</span>
+        </div>
+        
+        <div class="carrito-acciones">
+          <a href="tienda.html" class="seguir-comprando">Seguir comprando</a>
+          <button class="btn-comprar" onclick="realizarCompra()">Realizar compra</button>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <script>
-    function realizarCompra() {
-  const usuario = localStorage.getItem('usuario'); // Usa esto si el usuario está autenticado
-  if (!usuario) {
-    alert('Debes iniciar sesión para comprar.');
-    return;
-  }
+  <div id="footer-placeholder"></div>
 
-  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-  const productosFormateados = carrito.map(p => ({
-    nombre: p.nombre,
-    precio: parseFloat(p.precio),
-    cantidad: p.cantidad // si permites múltiples cantidades, cámbialo
-  }));
-
-  fetch('http://localhost:3000/comprar', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      usuario: usuario,
-      productos: productosFormateados
-    })
-  })
-    .then(res => res.json())
-    .then(data => {
-      alert(data.message);
-      localStorage.removeItem('carrito');
-      renderCarrito();
-      actualizarContador();
-    })
-    .catch(err => {
-      console.error(err);
-      alert('Error al realizar la compra.');
-    });
-}
-
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-
-    const actualizarCarrito = () => {
-      const lista = document.getElementById('lista-carrito');
-      const total = document.getElementById('total');
-      lista.innerHTML = '';
-      let suma = 0;
-
-      if (carrito.length === 0) {
-        lista.innerHTML = '<li>El carrito está vacío.</li>';
-      }
-
-      carrito.forEach(p => {
-        const li = document.createElement('li');
-        li.textContent = `${p.nombre} - €${p.precio}`;
-        lista.appendChild(li);
-        suma += parseFloat(p.precio);
-      });
-
-      total.textContent = `Total: €${suma.toFixed(2)}`;
-    };
-
-    actualizarCarrito();
-  </script>
+  <!-- Scripts externos -->
+  <script src="js/header.js"></script>
+  <script src="js/carrito.js"></script>
+  <script src="js/footer.js"></script>
 </body>
 </html>

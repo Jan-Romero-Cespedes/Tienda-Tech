@@ -1,0 +1,46 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("registerForm")
+  if (!form) {
+    console.error("No se encontró el formulario de registro")
+    return
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
+
+    const nombre = form.nombre.value
+    const email = form.email.value
+    const password = form.password.value
+
+    if (!nombre || !email || !password) {
+      alert("Por favor, completa todos los campos")
+      return
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre,
+          email,
+          password,
+        }),
+      })
+
+      if (res.ok) {
+        alert("Registro exitoso. Ahora puedes iniciar sesión.")
+        window.location.href = "login.html"
+      } else if (res.status === 409) {
+        alert("El nombre de usuario ya existe. Por favor, elige otro.")
+      } else {
+        alert("Error al registrar usuario. Inténtalo de nuevo.")
+      }
+    } catch (error) {
+      console.error("Error en el registro:", error)
+      alert("Error al conectar con el servidor. Inténtalo de nuevo más tarde.")
+    }
+  })
+})

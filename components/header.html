@@ -1,109 +1,101 @@
 <header class="main-header">
-  <nav class="navbar">
-    <ul class="nav-list">
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="tienda.html">Tienda</a></li>
-    </ul>
+  <div class="container">
+    <a href="index.html" class="logo">🛍️ Tienda Tech</a>
 
-    <div class="iconos-derecha">
-      <a href="login.html" title="Iniciar sesión" class="user-icon">
-        <img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" alt="Usuario" width="30" />
+    <nav class="nav">
+      <a href="tienda.html">Tienda</a>
+      <a href="perfil.html">Mi perfil</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="carrito.html" class="cart">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
       </a>
-      <a href="carrito.html" title="Carrito" class="cart-icon">
-        <img src="/images/carrito.png" alt="Carrito" width="30" />
-        <span class="cart-count" id="cart-count">0</span>
-      </a>
+      <button id="login-btn" class="auth-btn">Iniciar sesión</button>
+      <button id="logout-btn" class="auth-btn hidden">Cerrar sesión</button>
     </div>
-  </nav>
+  </div>
 </header>
 
 <style>
   .main-header {
-    background-color: #1e1e2f;
-    width: 100%;
-    padding: 1rem 2rem;
-    box-sizing: border-box;
-  }
+  background-color: #111;
+  color: #fff;
+  padding: 1em 0;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .nav-list {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
-  }
+.logo {
+  font-size: 1.5em;
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-  .nav-list li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-  }
+.nav a {
+  color: #ccc;
+  margin: 0 1em;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
 
-  .nav-list li a:hover {
-    color: #4caf50;
-  }
+.nav a:hover {
+  color: #fff;
+}
 
-  .iconos-derecha {
-    display: flex;
-    gap: 1.2rem;
-    align-items: center;
-    margin-left: auto;
-    position: relative;
-  }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
 
-  .iconos-derecha img {
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-  }
+.cart {
+  color: #fff;
+  position: relative;
+  text-decoration: none;
+}
 
-  .iconos-derecha img:hover {
-    transform: scale(1.1);
-  }
+.cart i {
+  font-size: 1.2em;
+}
 
-  .cart-icon {
-    position: relative;
-    display: inline-block;
-  }
+#cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #e74c3c;
+  color: white;
+  font-size: 0.75em;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
 
-  .cart-count {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: red;
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
-    border-radius: 50%;
-    padding: 3px 6px;
-    user-select: none;
-  }
+.auth-btn {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.auth-btn:hover {
+  background: #666;
+}
+
+.hidden {
+  display: none;
+}
 </style>
-
-<script>
-  (function actualizarHeader() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userIcon = document.querySelector('.user-icon');
-    if (user && userIcon) {
-      userIcon.href = 'perfil.html';
-      userIcon.title = 'Área Personal';
-    } else if (userIcon) {
-      userIcon.href = 'login.html';
-      userIcon.title = 'Iniciar sesión';
-    }
-
-    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-    const cartCount = document.getElementById('cart-count');
-    if (cartCount) {
-      cartCount.textContent = carrito.length;
-    }
-  })();
-</script>
