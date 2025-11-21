@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const nuevoNombre = nombreInput.value
 
         if (!nuevoNombre) {
-          alert("El nombre no puede estar vacío")
+          tiendaAlert("El nombre no puede estar vacío")
           return
         }
 
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const nuevoNombre = nombreInput.value
 
           if (!nuevoNombre) {
-            alert("El nombre no puede estar vacío")
+            tiendaAlert("El nombre no puede estar vacío")
             return
           }
 
@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     } else {
       // Si no hay usuario, redirigir a login
-      alert("Debes iniciar sesión para acceder a tu perfil")
+      await tiendaAlert("Debes iniciar sesión para acceder a tu perfil")
       window.location.href = "login.html"
     }
   }

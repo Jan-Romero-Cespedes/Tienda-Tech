@@ -147,6 +147,82 @@ img {
   display: none !important;
 }
 
+.tienda-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.tienda-alert-overlay.active {
+  display: flex;
+}
+
+.tienda-alert-box {
+  background: #1e1e2f;
+  color: #fff;
+  border-radius: 12px;
+  width: min(90vw, 360px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  animation: tiendaAlertFade 0.3s ease;
+}
+
+.tienda-alert-header {
+  padding: 1rem 1.25rem 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.tienda-alert-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.tienda-alert-body {
+  padding: 0.75rem 1.25rem 1rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #e0e0e5;
+}
+
+.tienda-alert-action {
+  width: calc(100% - 2.5rem);
+  margin: 0 1.25rem 1.25rem;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.tienda-alert-action:hover {
+  background: #3d8b40;
+}
+
+@keyframes tiendaAlertFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Footer */
 .main-footer {
   background-color: #1e1e2f;

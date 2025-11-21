@@ -34,12 +34,44 @@ document.addEventListener("DOMContentLoaded", () => {
   // Función para determinar imagen por defecto según el nombre del producto
   const imagenPorDefecto = (nombre) => {
     nombre = nombre.toLowerCase()
-    if (nombre.includes("teclado")) return "/images/carrito.png" // Usamos la imagen disponible
-    if (nombre.includes("ratón") || nombre.includes("mouse")) return "/images/carrito.png"
-    if (nombre.includes("monitor")) return "/images/carrito.png"
-    if (nombre.includes("auricular")) return "/images/carrito.png"
-    if (nombre.includes("altavoz")) return "/images/carrito.png"
-    return "/images/carrito.png"
+
+    // Teclados - cada tipo con su imagen específica
+    if (nombre.includes("teclado") && nombre.includes("rgb")) return "/images/teclado RGB.jpeg"
+    if (nombre.includes("teclado") && nombre.includes("mecánico")) return "/images/teclado RGB.jpeg"
+    if (nombre.includes("teclado") && nombre.includes("inalámbrico")) return "/images/Teclado Inalambrico.jpeg"
+
+    // Ratones - cada tipo con su imagen específica
+    if (nombre.includes("ratón") && (nombre.includes("gaming") || nombre.includes("gamer")))
+      return "/images/Raton Gaming.jpeg"
+    if (nombre.includes("mouse") && (nombre.includes("gaming") || nombre.includes("gamer")))
+      return "/images/Raton Gaming.jpeg"
+    if (nombre.includes("ratón") && nombre.includes("ergonómico")) return "/images/Raton Ergonomico.jpeg"
+    if (nombre.includes("mouse") && nombre.includes("ergonómico")) return "/images/Raton Ergonomico.jpeg"
+
+    // Monitores - cada tipo con su imagen específica
+    if (nombre.includes("monitor") && nombre.includes("24")) return "/images/Monitor 24.jpeg"
+    if (nombre.includes("monitor") && (nombre.includes("curvo") || nombre.includes("27")))
+      return "/images/Curvo 27.jpeg"
+
+    // Auriculares - cada tipo con su imagen específica
+    if (nombre.includes("auricular") && nombre.includes("micro")) return "/images/Auriculares Micro.jpeg"
+    if (nombre.includes("auricular") && (nombre.includes("inalámbrico") || nombre.includes("wireless")))
+      return "/images/auriculares inalambricos.jpeg"
+    if (nombre.includes("headset") && nombre.includes("gaming")) return "/images/Auriculares Micro.jpeg"
+
+    // Otros periféricos - cada tipo con su imagen específica
+    if (nombre.includes("altavoz") || nombre.includes("speaker") || nombre.includes("2.1"))
+      return "/images/altavoces 2.1.jpeg"
+    if (nombre.includes("webcam") || nombre.includes("cámara web")) return "/images/Webcam.jpeg"
+
+    // Categorías generales - solo si no hay coincidencia específica
+    if (nombre.includes("teclado")) return "/images/Teclado Inalambrico.jpeg"
+    if (nombre.includes("ratón") || nombre.includes("mouse")) return "/images/Raton Ergonomico.jpeg"
+    if (nombre.includes("monitor")) return "/images/Monitor 24.jpeg"
+    if (nombre.includes("auricular") || nombre.includes("headset")) return "/images/auriculares inalambricos.jpeg"
+
+    // Imagen por defecto si no hay coincidencia
+    return "/images/Webcam.jpeg"
   }
 
   // Función para determinar la categoría según el nombre del producto
@@ -100,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
         carrito.push({ ...producto, cantidad: 1 })
       }
       actualizarCarrito()
-      alert(`${producto.nombre} añadido al carrito`)
+      tiendaAlert(`${producto.nombre} añadido al carrito`)
     })
 
     return div
@@ -250,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           id: 3,
-          nombre: 'Monitor 27" 144Hz',
+          nombre: 'Monitor 24" 144Hz',
           precio: 249.99,
           categoria: "monitores",
           valoracion: 4.8,
@@ -258,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           id: 4,
-          nombre: "Auriculares 7.1 Surround",
+          nombre: "Auriculares con Micrófono",
           precio: 79.99,
           categoria: "auriculares",
           valoracion: 4.0,
@@ -272,7 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
           valoracion: 4.3,
           numValoraciones: 64,
         },
-        { id: 6, nombre: "Webcam HD 1080p", precio: 49.99, categoria: "webcams", valoracion: 3.9, numValoraciones: 87 },
+        {
+          id: 6,
+          nombre: "Webcam HD 1080p",
+          precio: 49.99,
+          categoria: "webcams",
+          valoracion: 3.9,
+          numValoraciones: 87,
+        },
         {
           id: 7,
           nombre: "Teclado Inalámbrico Compacto",
@@ -291,7 +330,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           id: 9,
-          nombre: 'Monitor Curvo 32" 4K',
+          nombre: 'Monitor Curvo 27" 4K',
           precio: 399.99,
           categoria: "monitores",
           valoracion: 4.9,
@@ -299,7 +338,7 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         {
           id: 10,
-          nombre: "Auriculares Bluetooth con Cancelación de Ruido",
+          nombre: "Auriculares Inalámbricos con Cancelación",
           precio: 129.99,
           categoria: "auriculares",
           valoracion: 4.6,

@@ -23,12 +23,44 @@ document.addEventListener("DOMContentLoaded", () => {
   // Función para determinar imagen por defecto según el nombre del producto
   const imagenPorDefecto = (nombre) => {
     nombre = nombre.toLowerCase()
-    if (nombre.includes("teclado")) return "/images/carrito.png" // Usamos la imagen disponible
-    if (nombre.includes("ratón") || nombre.includes("mouse")) return "/images/carrito.png"
-    if (nombre.includes("monitor")) return "/images/carrito.png"
-    if (nombre.includes("auricular")) return "/images/carrito.png"
-    if (nombre.includes("altavoz")) return "/images/carrito.png"
-    return "/images/carrito.png"
+
+    // Teclados - cada tipo con su imagen específica
+    if (nombre.includes("teclado") && nombre.includes("rgb")) return "/images/teclado RGB.jpeg"
+    if (nombre.includes("teclado") && nombre.includes("mecánico")) return "/images/teclado RGB.jpeg"
+    if (nombre.includes("teclado") && nombre.includes("inalámbrico")) return "/images/Teclado Inalambrico.jpeg"
+
+    // Ratones - cada tipo con su imagen específica
+    if (nombre.includes("ratón") && (nombre.includes("gaming") || nombre.includes("gamer")))
+      return "/images/Raton Gaming.jpeg"
+    if (nombre.includes("mouse") && (nombre.includes("gaming") || nombre.includes("gamer")))
+      return "/images/Raton Gaming.jpeg"
+    if (nombre.includes("ratón") && nombre.includes("ergonómico")) return "/images/Raton Ergonomico.jpeg"
+    if (nombre.includes("mouse") && nombre.includes("ergonómico")) return "/images/Raton Ergonomico.jpeg"
+
+    // Monitores - cada tipo con su imagen específica
+    if (nombre.includes("monitor") && nombre.includes("24")) return "/images/Monitor 24.jpeg"
+    if (nombre.includes("monitor") && (nombre.includes("curvo") || nombre.includes("27")))
+      return "/images/Curvo 27.jpeg"
+
+    // Auriculares - cada tipo con su imagen específica
+    if (nombre.includes("auricular") && nombre.includes("micro")) return "/images/Auriculares Micro.jpeg"
+    if (nombre.includes("auricular") && (nombre.includes("inalámbrico") || nombre.includes("wireless")))
+      return "/images/auriculares inalambricos.jpeg"
+    if (nombre.includes("headset") && nombre.includes("gaming")) return "/images/Auriculares Micro.jpeg"
+
+    // Otros periféricos - cada tipo con su imagen específica
+    if (nombre.includes("altavoz") || nombre.includes("speaker") || nombre.includes("2.1"))
+      return "/images/altavoces 2.1.jpeg"
+    if (nombre.includes("webcam") || nombre.includes("cámara web")) return "/images/Webcam.jpeg"
+
+    // Categorías generales - solo si no hay coincidencia específica
+    if (nombre.includes("teclado")) return "/images/Teclado Inalambrico.jpeg"
+    if (nombre.includes("ratón") || nombre.includes("mouse")) return "/images/Raton Ergonomico.jpeg"
+    if (nombre.includes("monitor")) return "/images/Monitor 24.jpeg"
+    if (nombre.includes("auricular") || nombre.includes("headset")) return "/images/auriculares inalambricos.jpeg"
+
+    // Imagen por defecto si no hay coincidencia
+    return "/images/Webcam.jpeg"
   }
 
   // Función para determinar la categoría según el nombre del producto
@@ -227,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const productosRelacionadosMuestra = [
         { id: "2", nombre: "Ratón Gaming 16000 DPI", precio: 59.99, valoracion: 4.2 },
         { id: "7", nombre: "Teclado Inalámbrico Compacto", precio: 39.99, valoracion: 3.7 },
-        { id: "4", nombre: "Auriculares 7.1 Surround", precio: 79.99, valoracion: 4.0 },
+        { id: "4", nombre: "Auriculares con Micrófono", precio: 79.99, valoracion: 4.0 },
       ]
       renderizarProductosRelacionados(productosRelacionadosMuestra)
     }
@@ -403,7 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Configurar evento para añadir al carrito
     const agregarBtn = document.getElementById("agregar-al-carrito")
     if (agregarBtn && cantidadInput) {
-      agregarBtn.addEventListener("click", () => {
+      agregarBtn.addEventListener("click", async () => {
         const cantidad = Number.parseInt(cantidadInput.value)
 
         // Buscar si el producto ya está en el carrito
@@ -419,7 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         actualizarCarrito()
-        alert(`${producto.nombre} añadido al carrito (${cantidad} unidades)`)
+        await tiendaAlert(`${producto.nombre} añadido al carrito (${cantidad} unidades)`)
       })
     }
 
@@ -486,21 +518,21 @@ document.addEventListener("DOMContentLoaded", () => {
       submitReviewBtn.addEventListener("click", async () => {
         // Verificar si hay una valoración seleccionada
         if (valoracionSeleccionada === 0) {
-          alert("Por favor, selecciona una valoración (1-5 estrellas)")
+          await tiendaAlert("Por favor, selecciona una valoración (1-5 estrellas)")
           return
         }
 
         // Verificar si hay texto en la reseña
         const comentario = reviewText.value.trim()
         if (comentario === "") {
-          alert("Por favor, escribe un comentario para tu reseña")
+          await tiendaAlert("Por favor, escribe un comentario para tu reseña")
           return
         }
 
         // Verificar si el usuario está autenticado
         const usuario = JSON.parse(sessionStorage.getItem("user"))
         if (!usuario) {
-          alert("Debes iniciar sesión para dejar una reseña")
+          await tiendaAlert("Debes iniciar sesión para dejar una reseña")
           window.location.href = "login.html"
           return
         }
@@ -519,10 +551,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (resultado) {
           // Recargar la página para mostrar la nueva reseña
-          alert("¡Gracias por tu reseña!")
+          await tiendaAlert("¡Gracias por tu reseña!")
           location.reload()
         } else {
-          alert("Hubo un problema al guardar tu reseña. Inténtalo de nuevo más tarde.")
+          await tiendaAlert("Hubo un problema al guardar tu reseña. Inténtalo de nuevo más tarde.")
         }
       })
     }

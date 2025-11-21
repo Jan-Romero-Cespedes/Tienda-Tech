@@ -3,9 +3,10 @@
 .hero {
   background-color: #1e1e2f;
   color: #fff;
-  padding: 3rem 0;
-  margin: -2rem -2rem 2rem -2rem;
+  padding: 3rem 1rem;
+  margin: 0 0 2rem 0;
   text-align: center;
+  width: 100%;
 }
 
 .hero-content {

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = form.password.value
 
     if (!nombre || !password) {
-      alert("Por favor, completa todos los campos")
+      tiendaAlert("Por favor, completa todos los campos")
       return
     }
 
@@ -33,14 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = await res.json()
         // Guardar usuario en sessionStorage
         sessionStorage.setItem("user", JSON.stringify(user))
-        alert("Sesión iniciada correctamente")
+        await tiendaAlert("Sesión iniciada correctamente")
         window.location.href = "tienda.html"
       } else {
-        alert("Nombre de usuario o contraseña incorrectos")
+        tiendaAlert("Nombre de usuario o contraseña incorrectos")
       }
     } catch (error) {
       console.error("Error al iniciar sesión:", error)
-      alert("Error al conectar con el servidor. Inténtalo de nuevo más tarde.")
+      tiendaAlert("Error al conectar con el servidor. Inténtalo de nuevo más tarde.")
     }
   })
 

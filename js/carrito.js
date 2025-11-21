@@ -79,11 +79,11 @@ function eliminarProducto(index) {
   }
 }
 
-function realizarCompra() {
+async function realizarCompra() {
   const user = JSON.parse(sessionStorage.getItem("user"))
 
   if (!user) {
-    alert("Debes iniciar sesión para realizar la compra")
+    await tiendaAlert("Debes iniciar sesión para realizar la compra")
     window.location.href = "login.html"
     return
   }
@@ -91,54 +91,41 @@ function realizarCompra() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || []
 
   if (carrito.length === 0) {
-    alert("El carrito está vacío")
+    tiendaAlert("El carrito está vacío")
     return
   }
 
   // Enviar la compra al servidor
-  fetch("http://localhost:3000/comprar", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      productos: carrito,
-    }),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Error al procesar la compra")
-      }
-      return res.json()
+  try {
+    const res = await fetch("http://localhost:3000/comprar", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productos: carrito,
+      }),
     })
-    .then((data) => {
-      alert(data.mensaje || "¡Compra realizada con éxito! Gracias por tu pedido.")
 
-      // Vaciar el carrito
-      localStorage.removeItem("carrito")
-      actualizarCarrito()
+    if (!res.ok) {
+      throw new Error("Error al procesar la compra")
+    }
 
-      // Actualizar contador en el header
-      const cartCount = document.getElementById("cart-count")
-      if (cartCount) {
-        cartCount.textContent = "0"
-      }
-    })
-    .catch((err) => {
-      console.error("Error al realizar la compra:", err)
+    const data = await res.json()
+    await tiendaAlert(data.mensaje || "¡Compra realizada con éxito! Gracias por tu pedido.")
+  } catch (err) {
+    console.error("Error al realizar la compra:", err)
+    await tiendaAlert("¡Compra realizada con éxito! Gracias por tu pedido.")
+  }
 
-      // Fallback en caso de error
-      alert("¡Compra realizada con éxito! Gracias por tu pedido.")
+  // Vaciar el carrito
+  localStorage.removeItem("carrito")
+  actualizarCarrito()
 
-      // Vaciar el carrito
-      localStorage.removeItem("carrito")
-      actualizarCarrito()
-
-      // Actualizar contador en el header
-      const cartCount = document.getElementById("cart-count")
-      if (cartCount) {
-        cartCount.textContent = "0"
-      }
-    })
+  // Actualizar contador en el header
+  const cartCount = document.getElementById("cart-count")
+  if (cartCount) {
+    cartCount.textContent = "0"
+  }
 }

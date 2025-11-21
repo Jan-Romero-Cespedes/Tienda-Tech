@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const password = form.password.value
 
     if (!nombre || !email || !password) {
-      alert("Por favor, completa todos los campos")
+      tiendaAlert("Por favor, completa todos los campos")
       return
     }
 
@@ -31,16 +31,16 @@ document.addEventListener("DOMContentLoaded", () => {
       })
 
       if (res.ok) {
-        alert("Registro exitoso. Ahora puedes iniciar sesión.")
+        await tiendaAlert("Registro exitoso. Ahora puedes iniciar sesión.")
         window.location.href = "login.html"
       } else if (res.status === 409) {
-        alert("El nombre de usuario ya existe. Por favor, elige otro.")
+        tiendaAlert("El nombre de usuario ya existe. Por favor, elige otro.")
       } else {
-        alert("Error al registrar usuario. Inténtalo de nuevo.")
+        tiendaAlert("Error al registrar usuario. Inténtalo de nuevo.")
       }
     } catch (error) {
       console.error("Error en el registro:", error)
-      alert("Error al conectar con el servidor. Inténtalo de nuevo más tarde.")
+      tiendaAlert("Error al conectar con el servidor. Inténtalo de nuevo más tarde.")
     }
   })
 })

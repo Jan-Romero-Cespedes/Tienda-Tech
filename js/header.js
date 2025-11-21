@@ -1,3 +1,82 @@
+let tiendaAlertResolve = null
+
+window.tiendaAlert =
+  window.tiendaAlert ||
+  function (message) {
+    window.alert(message)
+    return Promise.resolve()
+  }
+
+const initTiendaAlert = () => {
+  if (document.getElementById("tienda-alert")) {
+    return
+  }
+
+  const overlay = document.createElement("div")
+  overlay.id = "tienda-alert"
+  overlay.className = "tienda-alert-overlay"
+  overlay.innerHTML = `
+    <div class="tienda-alert-box" role="dialog" aria-labelledby="tienda-alert-title" aria-modal="true">
+      <div class="tienda-alert-header">
+        <span id="tienda-alert-title">Tienda Tech</span>
+        <button class="tienda-alert-close" data-alert-close>&times;</button>
+      </div>
+      <div class="tienda-alert-body">
+        <p class="tienda-alert-message"></p>
+      </div>
+      <button class="tienda-alert-action" data-alert-accept>Aceptar</button>
+    </div>
+  `
+
+  document.body.appendChild(overlay)
+
+  const messageEl = overlay.querySelector(".tienda-alert-message")
+  const closeOverlay = () => {
+    overlay.classList.remove("active")
+    if (typeof tiendaAlertResolve === "function") {
+      tiendaAlertResolve()
+      tiendaAlertResolve = null
+    }
+  }
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) {
+      closeOverlay()
+    }
+  })
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay.classList.contains("active")) {
+      closeOverlay()
+    }
+  })
+
+  overlay.querySelector("[data-alert-close]").addEventListener("click", closeOverlay)
+  overlay.querySelector("[data-alert-accept]").addEventListener("click", closeOverlay)
+
+  window.tiendaAlert = (message) => {
+    if (!messageEl) {
+      window.alert(message)
+      return Promise.resolve()
+    }
+    messageEl.textContent = message
+    overlay.classList.add("active")
+    return new Promise((resolve) => {
+      tiendaAlertResolve = resolve
+    })
+  }
+}
+
+const ensureTiendaAlertReady = () => {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTiendaAlert, { once: true })
+  } else {
+    initTiendaAlert()
+  }
+}
+
+ensureTiendaAlertReady()
+
 document.addEventListener("DOMContentLoaded", async () => {
   const placeholder = document.getElementById("header-placeholder")
   if (!placeholder) {
